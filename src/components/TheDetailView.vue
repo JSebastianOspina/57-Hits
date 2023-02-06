@@ -1,6 +1,9 @@
 <script setup>
 import TheNavbar from "./TheNavbar.vue";
-import CardImage from "./CardImage.vue";</script>
+import CardImage from "./CardImage.vue";
+import AlbumSong from "./AlbumSong.vue";
+import LineSeparator from "./LineSeparator.vue";
+import AlbumSongsHeader from "./AlbumSongsHeader.vue";</script>
 
 <template>
   <div class="container mx-auto my-2">
@@ -24,9 +27,15 @@ import CardImage from "./CardImage.vue";</script>
         </button>
       </div>
 
-      <div class=" px-3">
-        dsddsd
+      <div class="px-3 text-gray-400 font-light text-xs items-center">
+
+        <AlbumSongsHeader/>
+        <LineSeparator/>
+
+        <AlbumSong v-for="i in 15" :key="i"/>
+
       </div>
+
 
     </div>
 
