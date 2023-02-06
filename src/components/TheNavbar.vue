@@ -1,10 +1,26 @@
+<script setup>
+
+import {useRoute} from "vue-router/dist/vue-router";
+
+const route = useRoute();
+const isLinkActive = (pathName) => {
+  if (route.name === pathName) {
+    return "#333333";
+  }
+  return '';
+}
+</script>
+
 <template>
-  <nav class="flex justify-between items-center px-2">
+  <nav class="flex justify-between items-center px-2 w-full">
     <ul class="flex">
-      <li class="px-4 py-2 rounded cursor-pointer" style="background-color: #333333">
+      <router-link :to="{name:'home'}" class="px-4 py-2 rounded cursor-pointer"
+                   :style="{backgroundColor: isLinkActive('home')}">
         The hits
-      </li>
-      <li class="px-4 py-2 rounded cursor-pointer">My favorite hits</li>
+      </router-link>
+      <router-link :to="{name:'favorites'}" class="px-4 py-2 rounded cursor-pointer"
+                   :style="{backgroundColor: isLinkActive('favorites')}">My favorite hits
+      </router-link>
     </ul>
     <div class="flex bg-black rounded-xl pr-2 py-0.5 items-center">
       <img
@@ -20,7 +36,6 @@
             stroke-linecap="round"
             stroke-linejoin="round"/>
       </svg>
-
     </div>
   </nav>
 </template>

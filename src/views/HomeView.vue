@@ -1,9 +1,9 @@
 <script setup>
-import TheHome from "@/components/TheHomeView.vue";
+import TheHomeView from "@/components/TheHomeView.vue";
 </script>
 
 <template>
   <main>
-    <TheHome />
+    <TheHomeView />
   </main>
 </template>

@@ -16,7 +16,7 @@ import AlbumSongsHeader from "./AlbumSongsHeader.vue";</script>
             <span class="text-xs font-light uppercase">Album</span>
             <p class="text-4xl font-bold break-all">Happier Than Ever</p>
             <p class="text-xs font-semibold mt-1">
-              2021 • 16 canciones
+              2021 • 16 Songs
             </p>
           </div>
         </div>
