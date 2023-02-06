@@ -5,10 +5,10 @@ import AlbumCard from "./AlbumCard.vue";</script>
 
 <template>
   <div class="container mx-auto my-2">
-    <TheNavbar/>
+    <TheNavbar />
     <div class="px-4 h-full mt-4">
       <div class="grid grid-cols-12 gap-5 h-full">
-        <FavoriteCard/>
+        <FavoriteCard />
         <AlbumCard v-for="albumCard in 20" :key="albumCard" />
       </div>
     </div>
