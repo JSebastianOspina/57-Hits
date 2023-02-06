@@ -1,7 +1,7 @@
 <script setup>
 import TheNavbar from "./TheNavbar.vue";
 import CardImage from "./CardImage.vue";
-import AlbumSong from "./AlbumSong.vue";
+import Song from "./Song.vue";
 import LineSeparator from "./LineSeparator.vue";
 import AlbumSongsHeader from "./AlbumSongsHeader.vue";</script>
 
@@ -15,24 +15,24 @@ import AlbumSongsHeader from "./AlbumSongsHeader.vue";</script>
           <div class="flex flex-col flex-1">
             <span class="text-xs font-light uppercase">Album</span>
             <p class="text-4xl font-bold break-all">Happier Than Ever</p>
-            <p class="text-xs font-semibold">
+            <p class="text-xs font-semibold mt-1">
               2021 • 16 canciones
             </p>
           </div>
         </div>
       </div>
-      <div class="my-4 px-3">
+<!--      <div class="my-4 px-3">
         <button class="uppercase border border-white py-1 px-3 rounded text-xs tracking-widest ">
           <span>Favorite</span>
         </button>
-      </div>
+      </div>-->
 
-      <div class="px-3 text-gray-400 font-light text-xs items-center">
+      <div class="px-3 text-gray-400 font-light text-xs items-center mt-8">
 
         <AlbumSongsHeader/>
         <LineSeparator/>
 
-        <AlbumSong v-for="i in 15" :key="i"/>
+        <Song v-for="i in 15" :key="i"/>
 
       </div>
 

@@ -1,9 +1,8 @@
 <script setup>
-const props = defineProps({
+defineProps({
   width: Number,
   height: Number,
 });
-console.log(props.width);
 </script>
 
 <template>
