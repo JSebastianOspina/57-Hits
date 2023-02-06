@@ -1,8 +1,14 @@
 <script setup>
 
 import {useRoute} from "vue-router/dist/vue-router";
+import {useAuthStore} from "../stores/auth";
 
+const authStore = useAuthStore();
 const route = useRoute();
+
+const login = () => {
+  authStore.logIn('email@d.com','123456!b1');
+}
 const isLinkActive = (pathName) => {
   if (route.name === pathName) {
     return "#333333";
@@ -29,8 +35,10 @@ const isLinkActive = (pathName) => {
           src="@/assets/profile_image.jpeg"
       />
       <span class="text-xs mr-1 hidden sm:block">Sebastian Ospina</span>
-      <svg class="w-4 h-4 cursor-pointer" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-           xmlns="http://www.w3.org/2000/svg">
+      <svg
+          @click="login"
+          class="w-4 h-4 cursor-pointer" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
         <path
             d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
             stroke-linecap="round"
