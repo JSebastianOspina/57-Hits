@@ -55,7 +55,7 @@ const getAlbumId = () => {
         <LineSeparator/>
 
         <Song v-for="(song,index) in selectedAlbum.songs"
-              :key="song.id" :id="index"
+              :key="song.id" :id="index+1"
               :song="song" @play="playAudio"
         />
 

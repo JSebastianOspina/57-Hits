@@ -1,10 +1,34 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, onBeforeMount, ref} from "vue";
+import {useSongsStore} from "../stores/songs";
 
+const songsStore = useSongsStore()
 const isFav = ref(false);
-const handleFavorite = () => {
-  isFav.value = !(isFav.value);
+
+onBeforeMount(() => {
+  isFav.value = isTheSongFav();
+});
+
+const isTheSongFav = () => {
+  let isPresented = false;
+  songsStore.favorites.forEach((favorite)=>{
+    if(favorite.id === props.song.id){
+      isPresented = true;
+    }
+  });
+  return isPresented;
 }
+
+const handleFavorite = () => {
+  const newValue = !(isFav.value);
+  isFav.value = newValue;
+  if (newValue === true) {
+    songsStore.addFavorite(props.song);
+  } else {
+    songsStore.removeFavorite(props.song);
+  }
+}
+
 const durationInMinutes = computed(() => {
   const durationInMs = props.song.duration;
   let inMinutes = (durationInMs) / 1000 / 60; //From ms to seconds, then to minutes.
@@ -16,7 +40,7 @@ const durationInMinutes = computed(() => {
 
 const props = defineProps({
   id: Number,
-  song: Object
+  song: Object,
 });
 
 </script>

@@ -10,6 +10,15 @@ export const useSongsStore = defineStore("songs", () => {
 
     const songProvider = new SongsProvider(pagination.value.offset, pagination.value.total);
 
+    const addFavorite = (song) => {
+        favorites.value = [...favorites.value, song];
+    }
+
+    const removeFavorite = (song) => {
+        favorites.value = favorites.value.filter((favorite) => {
+            return favorite.id !== song.id
+        });
+    }
     const getAlbums = async () => {
         const offset = pagination.value.offset;
         const total = pagination.value.total;
@@ -50,7 +59,7 @@ export const useSongsStore = defineStore("songs", () => {
 
     }
 
-    return {favorites, albums, pagination, selectedAlbum, getAlbums, getAlbum};
+    return {favorites, albums, pagination, selectedAlbum, getAlbums, getAlbum, addFavorite, removeFavorite};
 
 }, {
     persist: {

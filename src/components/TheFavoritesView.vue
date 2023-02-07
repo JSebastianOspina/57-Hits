@@ -4,7 +4,17 @@ import Song from "./Song.vue";
 import LineSeparator from "./LineSeparator.vue";
 import AlbumSongsHeader from "./AlbumSongsHeader.vue";
 import FavoriteCard from "./FavoriteCard.vue";
+import {useSongsStore} from "../stores/songs";
+import {ref} from "vue";
 
+const songsStore = useSongsStore();
+const audio = ref(new Audio());
+
+const playAudio = (previewUrl) => {
+  if (previewUrl === null) return;
+  audio.value.src = previewUrl;
+  audio.value.play();
+}
 </script>
 
 <template>
@@ -15,7 +25,10 @@ import FavoriteCard from "./FavoriteCard.vue";
       <div class="px-3 text-gray-400 font-light text-xs items-center mt-8">
         <AlbumSongsHeader/>
         <LineSeparator/>
-        <Song v-for="i in 15" :key="i"/>
+        <Song v-for="(song,index) in songsStore.favorites"
+              :key="song.id" :id="index+1"
+              :song="song" @play="playAudio"
+        />
       </div>
     </div>
   </div>
