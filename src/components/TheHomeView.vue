@@ -18,8 +18,6 @@ onBeforeMount(() => {
 const goToFavorites = () => {
   router.push({name: "favorites"});
 }
-
-
 </script>
 
 <template>
@@ -31,6 +29,12 @@ const goToFavorites = () => {
         <AlbumCard v-for="album in songsStore.albums" :key="album.id"
                    :id="album.id" :artist="album.artist" :imageUrl="album.image" :name="album.name"
         />
+        <div class="col-span-full flex justify-center my-3">
+          <button class="rounded-full w-full border-white border py-2 font-bold"
+          @click="(e)=>{songsStore.getAlbums()}">
+            Give me more!
+          </button>
+        </div>
       </div>
     </div>
   </div>

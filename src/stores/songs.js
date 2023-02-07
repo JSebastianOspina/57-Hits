@@ -4,19 +4,34 @@ import SongsProvider from "../providers/SongsProvider";
 
 export const useSongsStore = defineStore("songs", () => {
     const albums = ref([]);
-    const songs = ref([]);
     const favorites = ref([]);
-    const songProvider = new SongsProvider();
+    const pagination = ref({offset: 0, total: 20});
 
-    const getAlbums = async (offset = 0, total = 20) => {
-        await songProvider.authorize();
-        albums.value = await songProvider.getAlbums();
+    const songProvider = new SongsProvider(pagination.value.offset, pagination.value.total);
+
+    const getAlbums = async () => {
+        const offset = pagination.value.offset;
+        const total = pagination.value.total;
+        let response;
+        try {
+            response = await songProvider.getAlbums(offset, total);
+            albums.value = response.albums;
+        } catch (e) {
+            response = await songProvider.getAlbums(offset, total);
+            albums.value = response.albums;
+        }
+        if (response.hasMorePages) {
+            pagination.value = {...pagination.value, offset: offset + total}
+        } else {
+            //Reset the counter
+            pagination.value = {...pagination.value, offset: 0}
+        }
     }
 
-    return {songs, favorites, albums, getAlbums};
+    return {favorites, albums, pagination, getAlbums};
 
 }, {
     persist: {
-        paths: ['favorites','albums']
+        paths: ['favorites', 'albums', 'pagination']
     }
 });

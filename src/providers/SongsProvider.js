@@ -2,15 +2,22 @@ import Album from "../models/album";
 
 class SongsProvider {
 
-    constructor() {
+    constructor(offset = 0, total = 20) {
         this.baseUrl = 'https://api.spotify.com/v1/';
         this.clientId = import.meta.env.VITE_APP_API_CLIENT_ID;
         this.clientSecret = import.meta.env.VITE_APP_API_CLIENT_SECRET;
         this.accessToken = null;
+        this.offset = offset;
+        this.total = total;
+        this.authorize();
     }
 
-    async getAlbums() {
-        const endpoint = 'browse/new-releases';
+    async getAlbums(offset, total) {
+        if (this.accessToken === null) {
+            throw new Error('An access token is required to make this request.')
+        }
+
+        const endpoint = `browse/new-releases?offset=${offset}&total=${total}`;
         const url = this.baseUrl + endpoint;
 
         try {
@@ -25,10 +32,13 @@ class SongsProvider {
             })
             const response = await request.json();
             const albums = response.albums.items;
-
-            return albums.map((album) => new Album(album.id, album.name, album.images[0].url, album.artists[0].name));
+            const hasMorePages = (offset + total) < response.albums.total;
+            return {
+                albums: albums.map((album) => new Album(album.id, album.name, album.images[0].url, album.artists[0].name)),
+                hasMorePages
+            };
         } catch (e) {
-            console.log('error', e)
+            throw new Error('Error fetching album');
         }
 
     }
@@ -50,7 +60,6 @@ class SongsProvider {
                 body: new URLSearchParams(body)
             })
             const response = await request.json();
-            console.log(response);
             this.accessToken = response.access_token;
         } catch (e) {
             console.log('error', e)
