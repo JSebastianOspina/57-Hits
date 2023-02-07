@@ -1,14 +1,10 @@
 # 57-hits
 
-This template should help get you started developing with Vue 3 in Vite.
+In this repository I will share the result of the technical test of 57Blocks 🚀
 
-## Recommended IDE Setup
+## If a picture is worth a thousand words, imagine a video:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+https://user-images.githubusercontent.com/55632072/217385590-d6fc0eb2-0b3d-482a-b137-ffacadb9caa0.mp4
 
 ## Project Setup
 
@@ -26,10 +22,4 @@ npm run dev
 
 ```sh
 npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```
