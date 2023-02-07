@@ -30,7 +30,7 @@ const goToFavorites = () => {
                    :id="album.id" :artist="album.artist" :imageUrl="album.image" :name="album.name"
         />
         <div class="col-span-full flex justify-center my-3">
-          <button class="rounded-full w-full border-white border py-2 font-bold"
+          <button class="rounded-full w-full md:w-1/2 border-white border py-2 font-bold"
           @click="(e)=>{songsStore.getAlbums()}">
             Give me more!
           </button>

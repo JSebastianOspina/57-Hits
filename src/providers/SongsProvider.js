@@ -1,4 +1,5 @@
 import Album from "../models/album";
+import Song from "../models/song";
 
 class SongsProvider {
 
@@ -9,22 +10,18 @@ class SongsProvider {
         this.accessToken = null;
         this.offset = offset;
         this.total = total;
-        this.authorize();
     }
 
     async getAlbums(offset, total) {
         if (this.accessToken === null) {
-            throw new Error('An access token is required to make this request.')
+            await this.authorize();
         }
 
         const endpoint = `browse/new-releases?offset=${offset}&total=${total}`;
         const url = this.baseUrl + endpoint;
 
         try {
-            const headers = {
-                'Authorization': 'Bearer ' + this.accessToken,
-                'Content-Type': 'application/json',
-            }
+            const headers = this.getAuthenticatedRequestHeaders()
 
             const request = await fetch(url, {
                 method: 'GET',
@@ -40,7 +37,41 @@ class SongsProvider {
         } catch (e) {
             throw new Error('Error fetching album');
         }
+    }
 
+    async getAlbum(albumId) {
+        if (this.accessToken === null) {
+            await this.authorize();
+        }
+
+        const endpoint = `albums/${albumId}`;
+        const url = this.baseUrl + endpoint;
+
+        try {
+            const headers = this.getAuthenticatedRequestHeaders()
+            const request = await fetch(url, {
+                method: 'GET',
+                headers,
+            })
+            const response = await request.json();
+            const songs = response.tracks.items;
+            return {
+                album: new Album(response.id, response.name, response.images[0].url, response.artists[0].name),
+                songs: songs.map((song) => {
+                    return new Song(song.id, song.name, song.preview_url, song.duration_ms)
+                })
+            }
+        } catch (e) {
+            throw new Error('Error fetching album');
+        }
+
+    }
+
+    getAuthenticatedRequestHeaders() {
+        return {
+            'Authorization': 'Bearer ' + this.accessToken,
+            'Content-Type': 'application/json',
+        }
     }
 
     async authorize() {
