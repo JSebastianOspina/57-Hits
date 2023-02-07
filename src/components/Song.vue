@@ -6,7 +6,7 @@ const handleFavorite = () => {
   isFav.value = !(isFav.value);
 }
 const durationInMinutes = computed(() => {
-  const durationInMs = props.duration;
+  const durationInMs = props.song.duration;
   let inMinutes = (durationInMs) / 1000 / 60; //From ms to seconds, then to minutes.
   let seconds = ((inMinutes % 1) * 60).toFixed(0) //Extract seconds , and remove decimal;
   inMinutes = (inMinutes < 10) ? "0" + inMinutes : inMinutes; //add 0 if less than 10
@@ -16,17 +16,16 @@ const durationInMinutes = computed(() => {
 
 const props = defineProps({
   id: Number,
-  name: String,
-  artist: String,
-  duration: Number
+  song: Object
 });
+
 </script>
 <template>
   <div class="col-span-full grid grid-cols-12 items-center py-1.5 px-3 main">
     <span>{{ id }}</span>
-    <div class="col-span-8">
-      <p class="text-white font-base">{{ name }}</p>
-      <p>{{ artist }}</p>
+    <div class="col-span-8" @click="$emit('play',song.previewUrl)">
+      <p class="text-white font-base">{{ song.name }}</p>
+      <p>{{ song.artist }}</p>
     </div>
     <div class="col-span-3 text-right flex items-center justify-end">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"

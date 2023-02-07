@@ -12,6 +12,14 @@ import {storeToRefs} from 'pinia'
 const route = useRoute();
 const songsStore = useSongsStore();
 const {selectedAlbum} = storeToRefs(songsStore);
+const audio = ref(new Audio());
+
+const playAudio = (previewUrl) => {
+  audio.value.pause();
+  if (previewUrl === null) return;
+  audio.value.src = previewUrl;
+  audio.value.play();
+}
 onBeforeMount(() => {
   songsStore.getAlbum(getAlbumId());
 })
@@ -44,9 +52,8 @@ const getAlbumId = () => {
         <LineSeparator/>
 
         <Song v-for="(song,index) in selectedAlbum.songs"
-              :key="song.id" :name="song.name" :id="index"
-              :artist="selectedAlbum.album.artist" :duration="song.duration"
-
+              :key="song.id" :id="index"
+              :song="song" @play="playAudio" class="cursor-pointer"
         />
 
       </div>

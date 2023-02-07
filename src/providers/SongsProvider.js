@@ -58,7 +58,7 @@ class SongsProvider {
             return {
                 album: new Album(response.id, response.name, response.images[0].url, response.artists[0].name),
                 songs: songs.map((song) => {
-                    return new Song(song.id, song.name, song.preview_url, song.duration_ms)
+                    return new Song(song.id, song.name, song.preview_url, song.duration_ms, response.artists[0].name)
                 })
             }
         } catch (e) {
