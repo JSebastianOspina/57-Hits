@@ -2,7 +2,9 @@
 
 import {useRoute} from "vue-router/dist/vue-router";
 import {useAuthStore} from "../stores/auth";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 const authStore = useAuthStore();
 const route = useRoute();
 
@@ -12,17 +14,22 @@ const isLinkActive = (pathName) => {
   }
   return '';
 }
+
+const logout = () => {
+  authStore.logout();
+  router.push({name:'login'});
+}
 </script>
 
 <template>
   <nav class="flex justify-between items-center px-2 w-full">
     <ul class="flex">
-      <router-link :to="{name:'home'}" class="px-4 py-2 rounded cursor-pointer"
-                   :style="{backgroundColor: isLinkActive('home')}">
+      <router-link :style="{backgroundColor: isLinkActive('home')}" :to="{name:'home'}"
+                   class="px-4 py-2 rounded cursor-pointer">
         The hits
       </router-link>
-      <router-link :to="{name:'favorites'}" class="px-4 py-2 rounded cursor-pointer"
-                   :style="{backgroundColor: isLinkActive('favorites')}">My favorite hits
+      <router-link :style="{backgroundColor: isLinkActive('favorites')}" :to="{name:'favorites'}"
+                   class="px-4 py-2 rounded cursor-pointer">My favorite hits
       </router-link>
     </ul>
     <div class="flex bg-black rounded-xl pr-2 py-0.5 items-center">
@@ -33,9 +40,9 @@ const isLinkActive = (pathName) => {
       />
       <span class="text-xs mr-1 hidden sm:block">{{ authStore.auth.user.email }}</span>
       <svg
-          @click="login"
-          class="w-4 h-4 cursor-pointer" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
+          class="w-4 h-4 cursor-pointer"
+          fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+          @click="logout">
         <path
             d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
             stroke-linecap="round"

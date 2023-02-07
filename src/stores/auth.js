@@ -6,7 +6,7 @@ export const useAuthStore = defineStore("auth", () => {
     const auth = ref({user: {}, error: {}});
     const isAuth = computed(() => auth.value.user.email !== undefined);
 
-    const logIn = (email, password) => {
+    const login = (email, password) => {
         validateCredentials(email, password);
         if (auth.value.error.hasError) {
             return;
@@ -14,6 +14,10 @@ export const useAuthStore = defineStore("auth", () => {
         auth.value.user = {
             email: email
         }
+    }
+
+    const logout = () => {
+        auth.value = {user: {}, error: {}};
     }
 
     const validateCredentials = (email, password) => {
@@ -38,5 +42,9 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
 
-    return {auth, isAuth, logIn};
+    return {auth, isAuth, login, logout};
+}, {
+    persist: {
+        paths:['auth.user']
+    }
 });

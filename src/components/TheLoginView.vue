@@ -11,7 +11,7 @@ const password = ref('');
 const authStore = useAuthStore();
 const login = (e) => {
   e.preventDefault();
-  authStore.logIn(email.value, password.value); //Ask for login
+  authStore.login(email.value, password.value); //Ask for login
   if (authStore.auth.error.hasError) {
     return;
   }
