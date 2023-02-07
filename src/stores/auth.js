@@ -1,44 +1,42 @@
-import {ref, computed} from "vue";
+import {computed, ref} from "vue";
 import {defineStore} from "pinia";
 import {isValidEmail, isValidPassword} from "../utils/auth"
 
 export const useAuthStore = defineStore("auth", () => {
-    const user = ref({});
-    const isAuth = computed(() => user.value.name !== undefined);
+    const auth = ref({user: {}, error: {}});
+    const isAuth = computed(() => auth.value.user.email !== undefined);
 
     const logIn = (email, password) => {
-        const verifiedCredentials = validateCredentials(email, password);
-        if (verifiedCredentials.hasError === true) {
-
+        validateCredentials(email, password);
+        if (auth.value.error.hasError) {
+            return;
         }
-        user.value = {
+        auth.value.user = {
             email: email
         }
     }
-    /*This is a dummy funcion, it should be a call to the server
-    * verifying the credentials and returning any kind of auth
-    * credentials (api token, session id etc)*/
 
     const validateCredentials = (email, password) => {
 
         const isAValidEmail = isValidEmail(email)
         if (isAValidEmail === false) {
-            return {error: 'The email should be a valid email', field: 'email', hasError: true};
+            auth.value.error = {message: 'The email should be a valid email', field: 'email', hasError: true};
+            return;
         }
         const isPasswordOk = isValidPassword(password);
 
         if (isPasswordOk === false) {
-            return {
-                error: 'The password should have at least 6 characters and contain lower and uppercase letters, numbers and simbols',
+            auth.value.error = {
+                message: 'The password should have at least 6 characters and contain lower and uppercase letters, numbers and symbols',
                 field: 'password',
                 hasError: true
             };
+            return;
         }
-        return {
-            hasError: false
-        }
+        //Both validations are ok, remove any older error from auth object.
+        auth.value.error = {};
     }
 
 
-    return {user, isAuth, logIn};
+    return {auth, isAuth, logIn};
 });

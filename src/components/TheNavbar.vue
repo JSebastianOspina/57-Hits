@@ -6,9 +6,6 @@ import {useAuthStore} from "../stores/auth";
 const authStore = useAuthStore();
 const route = useRoute();
 
-const login = () => {
-  authStore.logIn('email@d.com','123456!b1');
-}
 const isLinkActive = (pathName) => {
   if (route.name === pathName) {
     return "#333333";
@@ -34,7 +31,7 @@ const isLinkActive = (pathName) => {
           class="w-6 h-6 rounded-full mr-2"
           src="@/assets/profile_image.jpeg"
       />
-      <span class="text-xs mr-1 hidden sm:block">Sebastian Ospina</span>
+      <span class="text-xs mr-1 hidden sm:block">{{ authStore.auth.user.email }}</span>
       <svg
           @click="login"
           class="w-4 h-4 cursor-pointer" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
