@@ -23,7 +23,7 @@ const props = defineProps({
 <template>
   <div class="col-span-full grid grid-cols-12 items-center py-1.5 px-3 main">
     <span>{{ id }}</span>
-    <div class="col-span-8" @click="$emit('play',song.previewUrl)">
+    <div class="col-span-8 cursor-pointer" @click="$emit('play',song.previewUrl)">
       <p class="text-white font-base">{{ song.name }}</p>
       <p>{{ song.artist }}</p>
     </div>

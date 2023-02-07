@@ -5,7 +5,7 @@ import Song from "./Song.vue";
 import LineSeparator from "./LineSeparator.vue";
 import AlbumSongsHeader from "./AlbumSongsHeader.vue";
 import {useSongsStore} from "../stores/songs";
-import {onBeforeMount, ref} from "vue";
+import {onBeforeMount, onBeforeUnmount, ref} from "vue";
 import {useRoute} from "vue-router";
 import {storeToRefs} from 'pinia'
 
@@ -15,13 +15,16 @@ const {selectedAlbum} = storeToRefs(songsStore);
 const audio = ref(new Audio());
 
 const playAudio = (previewUrl) => {
-  audio.value.pause();
   if (previewUrl === null) return;
   audio.value.src = previewUrl;
   audio.value.play();
 }
 onBeforeMount(() => {
   songsStore.getAlbum(getAlbumId());
+})
+
+onBeforeUnmount(() => {
+  audio.value.pause();
 })
 
 const getAlbumId = () => {
@@ -53,7 +56,7 @@ const getAlbumId = () => {
 
         <Song v-for="(song,index) in selectedAlbum.songs"
               :key="song.id" :id="index"
-              :song="song" @play="playAudio" class="cursor-pointer"
+              :song="song" @play="playAudio"
         />
 
       </div>
