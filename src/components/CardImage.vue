@@ -2,6 +2,7 @@
 defineProps({
   width: Number,
   height: Number,
+  imageUrl:String
 });
 </script>
 
@@ -11,7 +12,7 @@ defineProps({
       :width="width ?? ''"
       :height="height ?? ''"
       alt=""
-      src="https://i.scdn.co/image/ab67616d0000b2732a038d3bf875d23e4aeaa84e"
+      :src="imageUrl"
   />
 </template>
 

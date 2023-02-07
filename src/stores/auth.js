@@ -45,6 +45,6 @@ export const useAuthStore = defineStore("auth", () => {
     return {auth, isAuth, login, logout};
 }, {
     persist: {
-        paths:['auth.user']
+        paths: ['auth.user']
     }
 });

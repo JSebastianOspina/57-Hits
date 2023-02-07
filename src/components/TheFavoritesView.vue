@@ -4,6 +4,7 @@ import Song from "./Song.vue";
 import LineSeparator from "./LineSeparator.vue";
 import AlbumSongsHeader from "./AlbumSongsHeader.vue";
 import FavoriteCard from "./FavoriteCard.vue";
+
 </script>
 
 <template>
