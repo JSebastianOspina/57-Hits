@@ -15,6 +15,7 @@ const login = (e) => {
   if (authStore.auth.error.hasError) {
     return;
   }
+  //Navigate to home view if the user was able to login
   router.push({name: 'home'});
 }
 </script>

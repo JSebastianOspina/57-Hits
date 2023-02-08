@@ -3,7 +3,7 @@ import TheNavbar from "./TheNavbar.vue";
 import CardImage from "./CardImage.vue";
 import Song from "./Song.vue";
 import LineSeparator from "./LineSeparator.vue";
-import AlbumSongsHeader from "./AlbumSongsHeader.vue";
+import AlbumSongsTableHeader from "./AlbumSongsTableHeader.vue";
 import {useSongsStore} from "../stores/songs";
 import {onBeforeMount, onBeforeUnmount, ref} from "vue";
 import {useRoute} from "vue-router";
@@ -51,7 +51,7 @@ const getAlbumId = () => {
       </div>
       <div class="px-3 text-gray-400 font-light text-xs items-center mt-8">
 
-        <AlbumSongsHeader/>
+        <AlbumSongsTableHeader/>
         <LineSeparator/>
 
         <Song v-for="(song,index) in selectedAlbum.songs"
