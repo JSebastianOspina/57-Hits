@@ -2,7 +2,7 @@ import {ref} from "vue";
 import {defineStore} from "pinia";
 import SongsProvider from "../providers/SongsProvider";
 
-export const useSongsStore = defineStore("songs", () => {
+export const useMusicStore = defineStore('music', () => {
     const albums = ref([]);
     const favorites = ref([]);
     const pagination = ref({offset: 0, total: 20});
@@ -47,13 +47,9 @@ export const useSongsStore = defineStore("songs", () => {
                 songs: response.songs
             };
         } catch (e) {
-            console.log('An error ocurred');
-            return;
-            await songProvider.authorize();
-            const response = await songProvider.getAlbum(albumId);
             selectedAlbum.value = {
-                album: response.album,
-                songs: response.songs
+                album: {},
+                songs: []
             };
         }
 

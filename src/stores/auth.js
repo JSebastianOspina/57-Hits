@@ -3,6 +3,7 @@ import {defineStore} from "pinia";
 import {isValidEmail, isValidPassword} from "../utils/auth"
 
 export const useAuthStore = defineStore("auth", () => {
+
     const auth = ref({user: {}, error: {}});
     const isAuth = computed(() => auth.value.user.email !== undefined);
 

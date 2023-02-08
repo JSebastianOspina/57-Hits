@@ -1,8 +1,8 @@
 <script setup>
 import {computed, onBeforeMount, ref} from "vue";
-import {useSongsStore} from "../stores/songs";
+import {useMusicStore} from "../stores/music";
 
-const songsStore = useSongsStore()
+const musicStore = useMusicStore()
 const isFav = ref(false);
 
 onBeforeMount(() => {
@@ -11,7 +11,7 @@ onBeforeMount(() => {
 
 const isTheSongFav = () => {
   let isPresented = false;
-  songsStore.favorites.forEach((favorite)=>{
+  musicStore.favorites.forEach((favorite)=>{
     if(favorite.id === props.song.id){
       isPresented = true;
     }
@@ -23,9 +23,9 @@ const handleFavorite = () => {
   const newValue = !(isFav.value);
   isFav.value = newValue;
   if (newValue === true) {
-    songsStore.addFavorite(props.song);
+    musicStore.addFavorite(props.song);
   } else {
-    songsStore.removeFavorite(props.song);
+    musicStore.removeFavorite(props.song);
   }
 }
 
@@ -45,7 +45,7 @@ const props = defineProps({
 
 </script>
 <template>
-  <div class="col-span-full grid grid-cols-12 items-center py-1.5 px-3 main">
+  <div class="col-span-full grid grid-cols-12 items-center py-1.5 px-3 main" data-test="song">
     <span>{{ id }}</span>
     <div class="col-span-8 cursor-pointer" @click="$emit('play',song.previewUrl)">
       <p class="text-white font-base">{{ song.name }}</p>

@@ -3,15 +3,15 @@ import TheNavbar from "./TheNavbar.vue";
 import FavoriteCard from "./FavoriteCard.vue";
 import AlbumCard from "./AlbumCard.vue";
 import {useRouter} from "vue-router";
-import {useSongsStore} from "../stores/songs";
+import {useMusicStore} from "../stores/music";
 import {onBeforeMount} from "vue";
 
-const songsStore = useSongsStore();
+const musicStore = useMusicStore();
 const router = useRouter();
 
 onBeforeMount(() => {
-  if (songsStore.albums.length === 0) {
-    songsStore.getAlbums();
+  if (musicStore.albums.length === 0) {
+    musicStore.getAlbums();
   }
 })
 
@@ -26,12 +26,12 @@ const goToFavorites = () => {
     <div class="px-4 h-full mt-4 w-full">
       <div class="grid grid-cols-12 gap-5 h-full">
         <FavoriteCard @click="goToFavorites" class="cursor-pointer"/>
-        <AlbumCard v-for="album in songsStore.albums" :key="album.id"
+        <AlbumCard v-for="album in musicStore.albums" :key="album.id"
                    :id="album.id" :artist="album.artist" :imageUrl="album.image" :name="album.name"
         />
         <div class="col-span-full flex justify-center my-3">
           <button class="rounded-full w-full md:w-1/2 border-white border py-2 font-bold"
-          @click="(e)=>{songsStore.getAlbums()}">
+          @click="(e)=>{musicStore.getAlbums()}">
             Give me more!
           </button>
         </div>

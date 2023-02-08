@@ -4,14 +4,14 @@ import CardImage from "./CardImage.vue";
 import Song from "./Song.vue";
 import LineSeparator from "./LineSeparator.vue";
 import AlbumSongsTableHeader from "./AlbumSongsTableHeader.vue";
-import {useSongsStore} from "../stores/songs";
+import {useMusicStore} from "../stores/music";
 import {onBeforeMount, onBeforeUnmount, ref} from "vue";
 import {useRoute} from "vue-router";
 import {storeToRefs} from 'pinia'
 
 const route = useRoute();
-const songsStore = useSongsStore();
-const {selectedAlbum} = storeToRefs(songsStore);
+const musicStore = useMusicStore();
+const {selectedAlbum} = storeToRefs(musicStore);
 const audio = ref(new Audio());
 
 const playAudio = (previewUrl) => {
@@ -20,7 +20,7 @@ const playAudio = (previewUrl) => {
   audio.value.play();
 }
 onBeforeMount(() => {
-  songsStore.getAlbum(getAlbumId());
+  musicStore.getAlbum(getAlbumId());
 })
 
 onBeforeUnmount(() => {
