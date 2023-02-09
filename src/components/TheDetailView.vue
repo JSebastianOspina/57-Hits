@@ -1,9 +1,11 @@
 <script setup>
 import TheNavbar from "./TheNavbar.vue";
-import CardImage from "./CardImage.vue";
+import AlbumBanner from "./AlbumBanner.vue";
 import Song from "./Song.vue";
 import LineSeparator from "./LineSeparator.vue";
 import AlbumSongsTableHeader from "./AlbumSongsTableHeader.vue";
+import ErrorMessage from "./ErrorMessage.vue";
+
 import {useMusicStore} from "../stores/music";
 import {onBeforeMount, onBeforeUnmount, ref} from "vue";
 import {useRoute} from "vue-router";
@@ -11,7 +13,7 @@ import {storeToRefs} from 'pinia'
 
 const route = useRoute();
 const musicStore = useMusicStore();
-const {selectedAlbum} = storeToRefs(musicStore);
+const {selectedAlbum, errorFetching} = storeToRefs(musicStore);
 const audio = ref(new Audio());
 
 const playAudio = (previewUrl) => {
@@ -36,35 +38,25 @@ const getAlbumId = () => {
 <template>
   <div class="container mx-auto my-2">
     <TheNavbar/>
-    <div class="flex flex-col h-full mt-3 w-full">
-      <div class="bg-gradient-to-b from-teal-800 to-teal-500 px-3 pb-4 pt-16">
-        <div class="flex items-end gap-x-4 w-full">
-          <CardImage class="shadow-2xl" height="180" width="180" :imageUrl="selectedAlbum.album.image"/>
-          <div class="flex flex-col flex-1">
-            <span class="text-xs font-light uppercase">Album</span>
-            <p class="text-4xl font-bold break-all">{{ selectedAlbum.album.name }}</p>
-            <p class="text-xs font-semibold mt-1">
-              {{ selectedAlbum.album.artist }}
-            </p>
-          </div>
-        </div>
+    <template v-if="!errorFetching">
+      <div class="flex flex-col h-full mt-3 w-full">
+        <AlbumBanner :selectedAlbum="selectedAlbum"/>
       </div>
       <div class="px-3 text-gray-400 font-light text-xs items-center mt-8">
-
         <AlbumSongsTableHeader/>
         <LineSeparator/>
-
         <Song v-for="(song,index) in selectedAlbum.songs"
-              :key="song.id" :id="index+1"
+              :id="index+1" :key="song.id"
               :song="song" @play="playAudio"
         />
-
       </div>
+    </template>
 
+    <ErrorMessage v-else/>
 
-    </div>
 
   </div>
+
 </template>
 
 

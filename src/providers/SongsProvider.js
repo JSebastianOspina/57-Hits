@@ -1,10 +1,12 @@
 import Album from "../models/album";
 import Song from "../models/song";
+import UnauthenticatedException from "../Exceptions/UnauthenticatedException";
+import UnexpectedErrorException from "../Exceptions/UnexpectedErrorException";
 
 class SongsProvider {
 
     constructor(offset = 0, total = 20) {
-        this.baseUrl = 'https://api.spotify.com/v1/';
+        this.baseUrl = import.meta.env.VITE_APP_API_BASE_URL;
         this.clientId = import.meta.env.VITE_APP_API_CLIENT_ID;
         this.clientSecret = import.meta.env.VITE_APP_API_CLIENT_SECRET;
         this.accessToken = null;
@@ -16,17 +18,18 @@ class SongsProvider {
         if (this.accessToken === null) {
             await this.authorize();
         }
-
         const endpoint = `browse/new-releases?offset=${offset}&total=${total}`;
         const url = this.baseUrl + endpoint;
+        const headers = this.getAuthenticatedRequestHeaders()
 
+        const request = await fetch(url, {
+            method: 'GET',
+            headers,
+        })
+        if (request.status === 401) {
+            throw new UnauthenticatedException('The request did not have a valid Bearer token');
+        }
         try {
-            const headers = this.getAuthenticatedRequestHeaders()
-
-            const request = await fetch(url, {
-                method: 'GET',
-                headers,
-            })
             const response = await request.json();
             const albums = response.albums.items;
             const hasMorePages = (offset + total) < response.albums.total;
@@ -37,9 +40,11 @@ class SongsProvider {
                 hasMorePages
             };
         } catch (e) {
-            throw new Error('Error fetching album');
+            throw new UnexpectedErrorException('There was an unexpected error');
         }
+
     }
+
 
     async getAlbum(albumId) {
         if (this.accessToken === null) {
@@ -49,12 +54,15 @@ class SongsProvider {
         const endpoint = `albums/${albumId}`;
         const url = this.baseUrl + endpoint;
 
+        const headers = this.getAuthenticatedRequestHeaders();
+        const request = await fetch(url, {
+            method: 'GET',
+            headers,
+        })
+        if (request.status === 401) {
+            throw new UnauthenticatedException('The request did not have a valid Bearer token');
+        }
         try {
-            const headers = this.getAuthenticatedRequestHeaders()
-            const request = await fetch(url, {
-                method: 'GET',
-                headers,
-            })
             const response = await request.json();
             const songs = response.tracks.items;
 
@@ -67,7 +75,7 @@ class SongsProvider {
                 songs: songsAsObjects
             }
         } catch (e) {
-            throw new Error('Error fetching album');
+            throw new UnexpectedErrorException('There was an unexpected error');
         }
 
     }
@@ -80,7 +88,7 @@ class SongsProvider {
     }
 
     async authorize() {
-        const url = 'https://accounts.spotify.com/api/token';
+        const url = import.meta.env.VITE_APP_API_AUTH_URL;
         const headers = {
             'Authorization': 'Basic ' + (btoa(this.clientId + ':' + this.clientSecret)),
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -98,7 +106,7 @@ class SongsProvider {
             const response = await request.json();
             this.accessToken = response.access_token;
         } catch (e) {
-            console.log('error', e)
+            throw new UnexpectedErrorException('There was an unexpected error');
         }
 
 
