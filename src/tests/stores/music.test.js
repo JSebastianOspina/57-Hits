@@ -19,7 +19,7 @@ describe('Music Store', () => {
         expect(musicStore.favorites).toEqual([newSong]);
     });
 
-    test('removeFavorite should remove the input song from favorites property of the store state ', () => {
+    test('removeFavorite should remove the input song from favorites property of the store state', () => {
         const musicStore = useMusicStore();
         const song1 = new Song(1, 'Wrecking Ball', '', 10000, 'Miley Cyrus');
         const song2 = new Song(2, 'Another One Bites the Dust', '', 10000, 'Queen');
@@ -27,14 +27,15 @@ describe('Music Store', () => {
         //Populate the store
         musicStore.favorites = [song1, song2]
 
-        //Remove  song1
+        //Remove song1
         musicStore.removeFavorite(song1)
 
+        //Now it should be an array containing just song2.
         expect(musicStore.favorites).toEqual([song2]);
 
     });
 
-    test('getAlbums should set 20 new Album objects to the property albums of the store state', async () => {
+    test('getAlbums should set an array of 20 Album objects to the property albums of the store state', async () => {
         const musicStore = useMusicStore();
         //Ensure is empty
         expect(musicStore.albums).toHaveLength(0)
@@ -43,14 +44,15 @@ describe('Music Store', () => {
         await musicStore.getAlbums();
 
         //There must be 20 items (since the default pagination is set two 20 for each call)
-        expect(musicStore.albums).toHaveLength(20);
+        const expectedAlbumNumber = 20;
+        expect(musicStore.albums).toHaveLength(expectedAlbumNumber);
 
         //Check if all elements are instance of the Album class
         expect(musicStore.albums.every(album => album instanceof Album)).toBeTruthy();
 
     });
 
-    test('getAlbum should set a list of Songs objects and an Album object to property selectedAlbum of the store state', async () => {
+    test('getAlbum should set a an Array of Songs objects and an Album object to property selectedAlbum of the store state', async () => {
         const musicStore = useMusicStore();
         //Ensure it starts with no album and an empty songs array
         expect(musicStore.selectedAlbum).toEqual({album: {}, songs: []})
