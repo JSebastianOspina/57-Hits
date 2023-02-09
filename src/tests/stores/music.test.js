@@ -1,13 +1,14 @@
-import {setActivePinia, createPinia} from 'pinia'
+import {createPinia, setActivePinia} from 'pinia'
 import {useMusicStore} from "@/stores/music";
 import Song from "../../models/song";
+import Album from "../../models/album";
 
 describe('Music Store', () => {
     beforeEach(() => {
         setActivePinia(createPinia())
     })
 
-    test('addFavorite should add a new favorite to the favorites property', () => {
+    test('addFavorite should add a new favorite to the favorites property of the store state', () => {
         const musicStore = useMusicStore();
 
         const newSong = new Song(1, 'Wrecking Ball', '', 10000, 'Miley Cyrus');
@@ -18,13 +19,13 @@ describe('Music Store', () => {
         expect(musicStore.favorites).toEqual([newSong]);
     });
 
-    test('removeFavorite should remove from favorites the input song', () => {
+    test('removeFavorite should remove the input song from favorites property of the store state ', () => {
         const musicStore = useMusicStore();
         const song1 = new Song(1, 'Wrecking Ball', '', 10000, 'Miley Cyrus');
         const song2 = new Song(2, 'Another One Bites the Dust', '', 10000, 'Queen');
 
         //Populate the store
-        musicStore.favorites = [song1,song2]
+        musicStore.favorites = [song1, song2]
 
         //Remove  song1
         musicStore.removeFavorite(song1)
@@ -33,19 +34,38 @@ describe('Music Store', () => {
 
     });
 
-    test('removeFavorite should remove from favorites the input song', () => {
+    test('getAlbums should set 20 new Album objects to the property albums of the store state', async () => {
         const musicStore = useMusicStore();
-        const song1 = new Song(1, 'Wrecking Ball', '', 10000, 'Miley Cyrus');
-        const song2 = new Song(2, 'Another One Bites the Dust', '', 10000, 'Queen');
+        //Ensure is empty
+        expect(musicStore.albums).toHaveLength(0)
 
-        //Populate the store
-        musicStore.favorites = [song1,song2]
+        //Fetch the new albums
+        await musicStore.getAlbums();
 
-        //Remove  song1
-        musicStore.removeFavorite(song1)
+        //There must be 20 items (since the default pagination is set two 20 for each call)
+        expect(musicStore.albums).toHaveLength(20);
 
-        expect(musicStore.favorites).toEqual([song2]);
+        //Check if all elements are instance of the Album class
+        expect(musicStore.albums.every(album => album instanceof Album)).toBeTruthy();
 
     });
+
+    test('getAlbum should set a list of Songs objects and an Album object to property selectedAlbum of the store state', async () => {
+        const musicStore = useMusicStore();
+        //Ensure it starts with no album and an empty songs array
+        expect(musicStore.selectedAlbum).toEqual({album: {}, songs: []})
+
+        const arbitrarySpotifyAlbumId = '2GROf0WKoP5Er2M9RXVNNs';
+        //Fetch the new albums
+        await musicStore.getAlbum(arbitrarySpotifyAlbumId);
+
+        //There must be 20 items (since the default pagination is set two 20 for each call)
+        expect(musicStore.selectedAlbum.album).toBeInstanceOf(Album);
+
+        //Check if all elements are instance of the Album class
+        expect(musicStore.selectedAlbum.songs.every(song => song instanceof Song)).toBeTruthy();
+
+    });
+
 
 });
