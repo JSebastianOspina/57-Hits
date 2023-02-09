@@ -30,8 +30,10 @@ class SongsProvider {
             const response = await request.json();
             const albums = response.albums.items;
             const hasMorePages = (offset + total) < response.albums.total;
+
+            const albumObjects = albums.map((album) => new Album(album.id, album.name, album.images[0].url, album.artists[0].name));
             return {
-                albums: albums.map((album) => new Album(album.id, album.name, album.images[0].url, album.artists[0].name)),
+                albums: albumObjects,
                 hasMorePages
             };
         } catch (e) {
@@ -55,11 +57,14 @@ class SongsProvider {
             })
             const response = await request.json();
             const songs = response.tracks.items;
+
+            const songsAsObjects = songs.map((song) => {
+                return new Song(song.id, song.name, song.preview_url, song.duration_ms, response.artists[0].name)
+            });
+            const album = new Album(response.id, response.name, response.images[0].url, response.artists[0].name);
             return {
-                album: new Album(response.id, response.name, response.images[0].url, response.artists[0].name),
-                songs: songs.map((song) => {
-                    return new Song(song.id, song.name, song.preview_url, song.duration_ms, response.artists[0].name)
-                })
+                album,
+                songs: songsAsObjects
             }
         } catch (e) {
             throw new Error('Error fetching album');

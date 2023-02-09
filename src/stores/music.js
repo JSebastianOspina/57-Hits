@@ -47,9 +47,11 @@ export const useMusicStore = defineStore('music', () => {
                 songs: response.songs
             };
         } catch (e) {
+            await songProvider.authorize();
+            const response = await songProvider.getAlbum(albumId);
             selectedAlbum.value = {
-                album: {},
-                songs: []
+                album: response.album,
+                songs: response.songs
             };
         }
 

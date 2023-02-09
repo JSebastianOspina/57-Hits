@@ -1,6 +1,6 @@
 import {computed, ref} from "vue";
 import {defineStore} from "pinia";
-import {isValidEmail, isValidPassword} from "../utils/auth"
+import {isValidEmail, isValidPassword} from "../helpers/auth"
 
 export const useAuthStore = defineStore("auth", () => {
 
